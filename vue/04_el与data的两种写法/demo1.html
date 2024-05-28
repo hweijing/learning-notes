@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>el与data的两种写法</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>Hello {{value}}</h1>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            // el: '#root',
+            // data也可以是一个函数，并且必须返回一个对象
+            data() {
+                // this代表vue实例对象，箭头函数没有自己的this
+                console.log(this);
+                return {
+                    value: 'World'
+                }
+            },
+        })
+
+        // vm是一个new出来的vue实例，也是一个对象，该对象中所有前缀带$的属性和方法都可以修改和使用，其他都不行
+        console.log(vm);
+
+        // $mount指定挂载到哪个容器
+        vm.$mount('#root');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVVM模型</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <!-- View -->
+    <div id="root">
+        <h1>Hello {{value1}}</h1>
+        <h1>Hello {{value2}}</h1>
+        <!-- vue实例中包含的属性和方法都可以直接获取到，value1和value2也是绑定在vue实例中带的属性 -->
+        <h1>{{$el}}</h1>
+        <!-- vue原型上的属性和方法也可以直接获取到 -->
+        <h1>{{$emit}}</h1>
+    </div>
+
+    <script>
+        // ViewModel，这个vue实例，用vm代表
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                // Model
+                return {
+                    value1: 'World',
+                    value2: 'Henan'
+                }
+            }
+        })
+
+        // 此时vue实例中已经有了value1和value2
+        console.log(vm);
+    </script>
+</body>
+
+</html>

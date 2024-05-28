@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回顾Object.defineProperty()方法</title>
+    </title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <script>
+        let age = 22;
+
+        let person = {
+            name: '张三',
+            sex: '男'
+        };
+
+        Object.defineProperty(person, 'age', {
+            // value为新增键的值
+            // value: '18',
+
+            // enumerable为true时表示该属性可以被枚举，默认不可枚举，即不参与遍历
+            // enumerable: true,
+
+            // writable为true时表示该属性可以被修改，默认不可修改
+            // writable: true,
+
+            // configurable为true时表示该属性可以被删除，默认不可删除
+            // configurable: true,
+
+            // 在使用get或set方法时，不能同时定义其他属性的值，整个函数称为getter
+            get() {
+                return age;
+            }
+        })
+
+        // 只有name和sex两个属性，age不可遍历
+        // console.log(Object.keys(person));
+
+        // for...in遍历时也没有age
+        // for (const key in person) {
+        //     console.log(key);
+        // }
+    </script>
+</body>
+
+</html>

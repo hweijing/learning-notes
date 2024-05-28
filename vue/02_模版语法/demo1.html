@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板语法</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 插值语法用以解析标签内容，指令语法解析标签属性 -->
+        <!-- 双括号中只能存放js表达式 -->
+        <h1>Hello, {{name}}, {{Date.now()}}</h1>
+        <!-- v-bind:使用模板语法，也只能存放js表达式 -->
+        <a v-bind:href="address.url.toUpperCase()">百度一下</a>
+        <!-- 简写形式 -->
+        <a :href="address.url">百度一下</a>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: 'World',
+                address: {
+                    url: 'http://www.baidu.com'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
