@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>何为数据代理</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <script>
+        // 数据代理：通过一个对象代理对另一个对象中属性的读或写
+        let o1 = {
+            x: 100
+        };
+
+        let o2 = {
+            y: 200
+        }
+
+        // 
+        Object.defineProperty(o2, 'x', {
+            get() {
+                console.log('读取o2.x');
+                return o1.x;
+            },
+            set(v) {
+                console.log('修改o2.x');
+                o1.x = v;
+            }
+        })
+    </script>
+</body>
+
+</html>

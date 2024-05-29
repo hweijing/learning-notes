@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>回顾Object.defineProperty()方法</title>
-    </title>
     <script src="../vue.js"></script>
 </head>
 
@@ -31,9 +30,18 @@
             // configurable为true时表示该属性可以被删除，默认不可删除
             // configurable: true,
 
-            // 在使用get或set方法时，不能同时定义其他属性的值，整个函数称为getter
+            // 在使用get或set方法时，不能同时定义其他属性的值
+            // 整个函数称为getter，每次访问person.age都会触发getter的调用
             get() {
+                console.log('访问person.age属性');
                 return age;
+            },
+
+            // 整个函数称为setter，每次修改person.age都会触发setter的调用，且传递修改后的值，但并不能修改person.age
+            set(v) {
+                console.log(v, '修改person.age属性');
+                // 此时将修改后的值赋给age，才能修改person.age，并且能同时修改外部变量age的值
+                age = v;
             }
         })
 

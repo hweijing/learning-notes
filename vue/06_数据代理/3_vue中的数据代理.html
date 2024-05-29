@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue中的数据代理</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>名称：{{name}}</h1>
+        <h1>年龄：{{age}}</h1>
+    </div>
+    <script>
+        // vm对象的name和age两个属性，是通过vm._data代理过来的，vm._data有name和age两个属性，vm对象通过getter和setter获得
+        // 即vm本身没有name和age两个属性，这两个属性都是通过Object.defineProperty()代理过来
+        // 读取或修改vm中的name和age会触发与之对应的getter和setter，修改时并且会修改vm._data中的值
+        let data = {
+            name: '张三',
+            age: 18
+        };
+
+        const vm = new Vue({
+            el: '#root',
+            data
+        });
+
+        // 打印true，可以验证这两个对象是完全相同的
+        console.log(vm._data === data);
+    </script>
+</body>
+
+</html>
