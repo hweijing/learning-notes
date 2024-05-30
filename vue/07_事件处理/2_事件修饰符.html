@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件修饰符</title>
+    <script src="../vue.js"></script>
+    <style>
+        .div1 {
+            height: 50px;
+            background-color: aqua;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{msg}}</h1>
+        <!-- vue阻止事件默认行为，事件修饰符.pervent -->
+        <a href="http://www.baidu.com" @click.prevent="showInfo1">点我提示信息</a>
+        <!-- 事件冒泡：点击button的事件，同时会触发div身上的事件 -->
+        <div class="div1" @click="showInfo1">
+            <button @click="showInfo1">点我提示信息</button>
+        </div>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    msg: '你好'
+                }
+            },
+            methods: {
+                showInfo1(e) {
+                    // js原生阻止事件默认行为
+                    // e.preventDefault();
+
+                    // js原生阻止事件冒泡
+                    // e.stopPropagation();
+                    
+                    alert('你好');
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

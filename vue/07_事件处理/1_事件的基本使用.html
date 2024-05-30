@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件的基本使用</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{msg}}</h1>
+        <button v-on:click="showInfo1">点我提示信息</button>
+        <!-- 简写形式 -->
+        <button @click="showInfo2">点我提示信息</button>
+        <!-- 传值 -->
+        <button @click="showInfo3($event, msg)">点我提示信息</button>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    msg: '你好'
+                }
+            },
+            // methods中的函数也可以写在data里面，但是vue会给函数做一个数据代理，但函数本身不需要数据代理，所以还是要写在methods中才可以
+            methods: {
+                showInfo1(event) {
+                    // event是一个事件对象，PointerEvent
+                    console.log(event);
+                    // this是vue实例，vm
+                    console.log(this);
+                    alert('你好');
+                },
+                showInfo2: () => {
+                    // 如果是箭头函数，this指window
+                    console.log(this);
+                },
+                showInfo3(event, value) {
+                    console.log(event, value);
+                }
+            },
+        })
+
+        console.log(vm);
+    </script>
+</body>
+
+</html>
