@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>键盘事件</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{msg}}</h1>
+        <!-- .enter：按下回车触发事件 -->
+        <input type="text" placeholder="按下回车提示输入" @keyup.enter="showMsg"><br>
+        <!-- .deleter：按下删除触发事件 -->
+        <input type="text" placeholder="按下回车提示输入" @keyup.delete="showMsg"><br>
+        <!-- .tab：按下tab键触发事件，必须配合@keydown使用，即当键盘按下触发，键盘抬起后就切换走了 -->
+        <input type="text" placeholder="按下回车提示输入" @keydown.tab="showMsg">
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    msg: '你好'
+                };
+            },
+            methods: {
+                showMsg(event) {
+                    console.log(event.target.value);
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>

@@ -26,6 +26,11 @@
         </div>
         <!-- .once：事件仅执行一次 -->
         <button @click.once="showInfo1">点我提示信息</button>
+        <!-- 事件修饰符组合使用 -->
+        <div class="div1" @click="showInfo1">
+            <!-- 正常情况应该是先触发冒泡，发生两次alert，再触发默认事件跳转页面，组合使用事件修饰符可以防止第二次冒泡和跳转 -->
+            <a href="http://www.baidu.com" @click.stop.prevent="showInfo1">点我提示信息</a>
+        </div>
     </div>
 
     <script>

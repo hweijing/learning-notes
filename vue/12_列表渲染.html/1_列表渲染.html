@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表渲染</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 遍历数组 -->
+        <ul>
+            <!-- :key的值必须是唯一标识 -->
+            <li v-for="(item, index) in persons" :key="index">
+                <p>{{item.name}}-{{item.age}}-{{index}}</p>
+            </li>
+        </ul>
+
+        <!-- 遍历对象 -->
+        <ul>
+            <!-- 第一个参数是值，第二个参数是键，index也是下标唯一标识 -->
+            <li v-for="(value, key, index) in propertyDescriptor" :key="index">
+                <p>{{key}}-{{value}}-{{index}}</p>
+            </li>
+        </ul>
+
+        <!-- 遍历字符串 -->
+        <ul>
+            <li v-for="(value, index) in strings" :key="index">
+                <p>{{value}}-{{index}}</p>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    persons: [
+                        {
+                            id: 1,
+                            name: 'zhangsan',
+                            age: 10
+                        },
+                        {
+                            id: 2,
+                            name: 'lisi',
+                            age: 11
+                        },
+                        {
+                            id: 3,
+                            name: 'wangwu',
+                            age: 12
+                        }
+                    ],
+                    propertyDescriptor: {
+                        value: 100,
+                        enumerable: true,
+                        writable: true,
+                        configurable: true
+                    },
+                    strings: 'hello'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

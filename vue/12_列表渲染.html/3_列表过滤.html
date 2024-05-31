@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表过滤</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>人员列表</h1>
+        <input type="text" placeholder="请输入名字" v-model="keyWord">
+        <ul>
+            <li v-for="(item, index) in filterPersons" :key="item.id">
+                <p>{{item.name}}-{{item.age}}-{{item.sex}}</p>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    keyWord: '',
+                    persons: [
+                        {
+                            id: 1,
+                            name: '马冬梅',
+                            age: 19,
+                            sex: "女"
+                        },
+                        {
+                            id: 2,
+                            name: '周冬雨',
+                            age: 20,
+                            sex: "女"
+                        },
+                        {
+                            id: 3,
+                            name: '周杰伦',
+                            age: 21,
+                            sex: "男"
+                        },
+                        {
+                            id: 4,
+                            name: '温兆伦',
+                            age: 22,
+                            sex: "男"
+                        }
+                    ],
+                    filterPersons: []
+                }
+            },
+            watch: {
+                keyWord: {
+                    handler(newValue, oldValue) {
+                        console.log(newValue);
+                        // filter会返回一个全新的数组，并且不影响原数组
+                        this.filterPersons = this.persons.filter(v => v.name.includes(newValue));
+                    },
+                    immediate: true
+                }
+            },
+        })
+
+        // 任何字符串都会包含一个空字符串，输出0，空串是任何字符串的子集
+        console.log('abc'.indexOf(''));
+        console.log('abc'.includes(''));
+    </script>
+</body>
+
+</html>

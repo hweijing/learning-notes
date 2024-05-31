@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深度监视实现天气案例</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <button @click="change()">change</button>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    o1: {
+                        x: 100,
+                        y: 200
+                    }
+                }
+            },
+            methods: {
+                change() {
+                    this.o1.x++;
+                    this.o1.y--;
+                }
+            },
+            watch: {
+                // 监视多级结构中某个属性的变化
+                // 'o1.x': {
+                //     handler(newValue, oldValue) {
+                //         console.log(newValue, oldValue, 'o1.x被修改');
+                //     }
+                // },
+                o1: {
+                    handler(newValue, oldValue) {
+                        console.log(newValue, oldValue, 'o1被修改');
+                    },
+                    // 若data中的一个对象中有多个并行或嵌套的对象，并且需要监视整个对象的变化，则需要开启deep属性
+                    deep: true
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

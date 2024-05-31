@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监视属性实现天气案例</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <p>今天天气很{{weather}}</p>
+        <button @click="change()">切换天气</button>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    msg: true
+                }
+            },
+            methods: {
+                change() {
+                    this.msg = !this.msg;
+                }
+            },
+            computed: {
+                weather() {
+                    return this.msg ? '炎热' : '凉爽';
+                }
+            },
+            watch: {
+                // msg: {
+                //     // handler：会在任何被侦听的对象的值改变时被调用
+                //     // newValue是修改后的值，oldValue是修改前的值
+                //     handler(newValue, oldValue) {
+                //         console.log(newValue, oldValue, 'msg被修改');
+                //     },
+                //     // immediate：会在侦听开始之后被立即调用
+                //     immediate: true
+                // },
+                // 计算属性一样可以被监视
+                weather: {
+                    handler(newValue, oldValue) {
+                        console.log(newValue, oldValue, 'weather被修改');
+                    },
+                }
+            },
+        })
+
+        // 监视属性的第二种写法，第一个参数表示监视哪个属性，第二个参数是监视的配置
+        vm.$watch('msg', {
+            handler(newValue, oldValue) {
+                console.log(newValue, oldValue, 'msg被修改');
+            },
+            immediate: true
+        });
+    </script>
+</body>
+
+</html>

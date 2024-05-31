@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>key的原理</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <ul>
+            <!-- :key的值必须是唯一标识 -->
+            <!-- :key的值被vue内部所使用，外部看不到 -->
+            <!-- index会有问题，必须要用各项数据的唯一标识 -->
+            <!-- 
+                li被循环后会初始生成虚拟DOM（Vnodes），虚拟DOM上有key的值，vue的虚拟DOM对比算法就是对比的key，
+                所以如果用数组下标index的话，一旦打乱数组顺序，新产生的虚拟DOM的key的值（index）会和旧的虚拟DOM的key的值（index）一样，导致其他DOM可能不会被替换
+            -->
+            <!-- 如果不写:key的话，会默认:key=index -->
+            <!-- 
+                虚拟DOM中key的作用：
+                key是虚拟DOM对象的标识，当数据发生变化时，vue会根据新数据生成新的虚拟DOM，随后vue进行新虚拟DOM和旧虚拟DOM的差异对比比较规则如下
+                1.旧虚拟DOM中找到了与新虚拟DOM相同的key，若虚拟DOM中内容没变，直接使用之前的真实DOM，若虚拟DOM中内容变了，则生成新的真实DOM，随后替换掉页面中之前的真实DOM
+                2.旧虚拟DOM中未找到与新虚拟DOM相同的key，则创建新的真实DOM，随后渲染到页面    
+            -->
+            <!--
+                用:key="index"可能会引发的问题：
+                若对数据进行逆序添加或删除等破环顺序的操作，会产生没有必要的真实DOM更新，界面效果没问题，但效率低
+                若DOM结构中还包含输入类的DOM，会产生错误DOM更新，例如有些输入类的DOM节点不需要换，但其他DOM节点需要换
+            -->
+            <li v-for="(item, index) in persons" :key="index">
+                <span>{{item.name}}-{{item.age}}-{{index}}</span>
+                <input type="text">
+            </li>
+        </ul>
+        <button @click="addPerson">增加一个人</button>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    persons: [
+                        {
+                            id: 1,
+                            name: 'zhangsan',
+                            age: 10
+                        },
+                        {
+                            id: 2,
+                            name: 'lisi',
+                            age: 11
+                        },
+                        {
+                            id: 3,
+                            name: 'wangwu',
+                            age: 12
+                        }
+                    ]
+                }
+            },
+            methods: {
+                addPerson() {
+                    const zhaoliu = {
+                        id: 4,
+                        name: 'zhaoliu',
+                        age: 40
+                    };
+
+                    this.persons.unshift(zhaoliu);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

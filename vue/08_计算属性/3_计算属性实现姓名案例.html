@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算属性实现姓名案例</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        姓：<input type="text" v-model="firstName"><br>
+        名：<input type="text" v-model="lastName"><br>
+        姓名：<span>{{fullName}}</span>
+    </div>
+    
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    firstName: '张',
+                    lastName: '三'
+                };
+            },
+            // 对vue来说，data返回对象的键就是属性，计算属性就是把vm自身这些属性加工计算（vm以外的属性不可计算），生成全新的属性
+            // 生成的新属性同样绑定在vue实例上，但计算属性生成的新属性不在vm._data中，由此可以区别属性和计算属性
+            computed: {
+                fullName: {
+                    // 当读取fullName时，get就会被调用，且返回值作为fullName的值
+                    // get只有在初次读取fullName或fullName依赖的自身属性发生变化时才会被调用
+                    // 如果fullName在页面上展示，则fullName依赖的自身属性的每次变化都会调用get
+                    get() {
+                        console.log('get被调用');
+                        return this.firstName + '-' + this.lastName;
+                    },
+                    // 若fullName的值会被更改，则需要用到set
+                    set(value) {
+                        console.log('set被调用', value);
+                        // split：按照指定字符将字符串分割成数组
+                        const arr = value.split('-');
+                        // 如果fullName在页面上展示，则fullName依赖的自身属性的每次变化都会调用get
+                        // 如果不在页面上展示，则不会调用get
+                        this.firstName = arr[0];
+                        this.lastName = arr[1];
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

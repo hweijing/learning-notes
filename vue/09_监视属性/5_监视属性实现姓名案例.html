@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监视属性实现姓名案例</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        姓：<input type="text" v-model="firstName"><br>
+        名：<input type="text" v-model="lastName"><br>
+        姓名：<span>{{fullName}}</span>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    firstName: 'zhang',
+                    lastName: 'san',
+                    fullName: 'zhang-san'
+                };
+            },
+            watch: {
+                firstName(nv, ov) {
+                    // 若要求一秒后再执行任务，此时只能使用监视属性，因为计算属性是即时生效的，计算属性中不能写异步函数
+                    // 定时器的回调函数必须是箭头函数，因为定时器的回调函数是JS引擎帮助调用的，如果写成普通函数，则this默认就是window
+                    // 写成箭头函数，虽然同样是JS引擎帮助调用，但函数没有自己的this，只能向外找this
+                    setTimeout(() => {
+                        this.fullName = nv + '-' + this.lastName;
+                    }, 1000);
+                },
+                lastName(nv, ov) {
+                    this.fullName = this.firstName + '-' + nv;
+                }
+            },
+        })
+
+        // 计算属性和监视属性的区别：
+        // 1.计算属性能完成的功能，监视属性一样可以完成，反之监视属性能完成的功能，计算属性不一定能完成，例如计算属性中不能完成异步操作
+        // 2.能被vue管理的函数，最好写成普通函数，这样this才能指向vue实例或组件实例对象，但所有不被vue所管理的函数（定时器的回调、ajax的回调、promise的回调），要写成箭头函数，这样其中的this才能向外找到vue实例
+    </script>
+</body>
+
+</html>

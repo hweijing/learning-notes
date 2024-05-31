@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插值语法实现姓名案例</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        姓：<input type="text" v-model="firstName"><br>
+        名：<input type="text" v-model="lastName"><br>
+        <!-- vue不推荐这种代码风格，插值语法中的表达式应尽量简单 -->
+        姓名：<span>{{firstName.slice(0,3)}} - {{lastName}}</span>
+    </div>
+    
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    firstName: '张',
+                    lastName: '三'
+                };
+            }
+        })
+    </script>
+</body>
+
+</html>

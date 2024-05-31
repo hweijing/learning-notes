@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>条件渲染</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- v-show：实际是给该元素置为display:none -->
+        <h1 v-show="condition">{{msg}}</h1>
+
+        <!-- v-if：直接把这个DOM元素删除掉了 -->
+        <!-- v-show和v-if的区别：如果该DOM节点切换频率很高，则用v-show，因为不需要对DOM结构做更改 -->
+        <h1 v-if="condition">{{msg + '1'}}</h1>
+
+        <!-- v-else后不跟条件 -->
+        <!-- 一个判断中间不能有其他DOM元素，否则这个判断无效 -->
+        <h1 v-else>{{msg + '2'}}</h1>
+
+        <!-- vue中也有template标签，可以在渲染时忽略此标签，且template标签只能搭配v-if使用 -->
+        <template v-if="condition">
+            <h1>1</h1>
+            <h1>2</h1>
+            <h1>3</h1>
+            <h1>4</h1>
+        </template>
+    </div>
+    
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    msg: '你好',
+                    condition: true
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

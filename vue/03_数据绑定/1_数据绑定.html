@@ -11,7 +11,7 @@
 <body>
     <div id="root">
         <!-- v-bind只是单项数据绑定，改变vue实例中的值会影响页面数据，但改变页面数据不会影响vue实例 -->
-        单项数据绑定：<input type="text" v-bind:value="value"><br>
+        单项数据绑定：<input type="text" :value="value"><br>
         <!-- v-model双向数据绑定 -->
         <!-- v-model只能用于表单类元素，只跟那些有value属性的标签有互动，比如输入框、单选、多选 -->
         双向数据绑定：<input type="text" v-model:value="value"><br>

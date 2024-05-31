@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算属性实现天气案例</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <p>今天天气很{{weather}}</p>
+        <button @click="change()">切换天气</button>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    msg: true
+                }
+            },
+            methods: {
+                change() {
+                    this.msg = !this.msg;
+                }
+            },
+            computed: {
+                weather() {
+                    return this.msg ? '炎热' : '凉爽';
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

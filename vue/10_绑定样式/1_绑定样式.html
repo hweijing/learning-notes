@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绑定样式</title>
+    <style>
+        .basic {
+            width: 200px;
+            height: 200px;
+            border: 1rem #000 solid;
+        }
+
+        .blue {
+            width: 200px;
+            height: 200px;
+            border: 1rem #000 solid;
+            background-color: blue;
+        }
+
+        .yellow {
+            width: 200px;
+            height: 200px;
+            border: 1rem #000 solid;
+            background-color: yellow;
+        }
+
+        .red {
+            width: 200px;
+            height: 200px;
+            border: 1rem #000 solid;
+            background-color: red;
+        }
+
+        .d1 {
+            width: 500px;
+        }
+
+        .d2 {
+            height: 500px;
+        }
+
+        .d3 {
+            border: 1rem green outset;
+        }
+    </style>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 绑定class：字符串，适用于样式的类名不确定，需要动态指定 -->
+        <div class="basic" :class="className" @click="change1">demo</div><br>
+
+        <!-- 绑定class：数组，适用于要绑定的样式个数或名字不确定 -->
+        <div class="basic" :class="classNameArr" @click="change2">demo</div><br>
+
+        <!-- 绑定class：对象，适用于要绑定的样式个数或名字都确定，但要动态确定用不用 -->
+        <div class="basic" :class="classNameObj" @click="change3">demo</div><br>
+
+        <!-- 绑定style：对象 -->
+        <div class="basic" :style="styleNameObj" @click="change4">demo</div>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    className: 'blue',
+                    classNameArr: ['d1', 'd2', 'd3'],
+                    classNameObj: {
+                        d1: true,
+                        d2: false,
+                        d3: true
+                    },
+                    styleNameObj: {
+                        'fontSize': '40px',
+                        'fontStyle': 'italic'
+                    }
+                }
+            },
+            methods: {
+                change1() {
+                    const arr = ['blue', 'yellow', 'red'];
+                    // Math.random()返回0-1的伪随机数，不包括1，乘以3之后就会生成0-无限接近于3的数，再Math.floor()向下取整即可
+                    const index = Math.floor(Math.random() * 3);
+                    this.className = arr[index];
+                },
+                change2() {
+                    this.classNameArr.pop();
+                },
+                change3() {
+                    this.classNameObj.d2 = !this.classNameObj.d2;
+                },
+                change4() {
+                    console.log(this.styleNameObj);
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
