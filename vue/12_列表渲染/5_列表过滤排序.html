@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>列表过滤</title>
+    <title>列表过滤排序</title>
     <script src="../vue.js"></script>
 </head>
 
@@ -12,6 +12,9 @@
     <div id="root">
         <h1>人员列表</h1>
         <input type="text" placeholder="请输入名字" v-model="keyWord">
+        <button @click="sortType = 1">年龄升序</button>
+        <button @click="sortType = 2">年龄降序</button>
+        <button @click="sortType = 0">恢复默认顺序</button>
         <ul>
             <li v-for="(item, index) in filterPersons" :key="item.id">
                 <p>{{item.name}}-{{item.age}}-{{item.sex}}</p>
@@ -24,12 +27,13 @@
             el: '#root',
             data() {
                 return {
+                    sortType: 0,
                     keyWord: '',
                     persons: [
                         {
                             id: 1,
                             name: '马冬梅',
-                            age: 19,
+                            age: 22,
                             sex: "女"
                         },
                         {
@@ -47,28 +51,25 @@
                         {
                             id: 4,
                             name: '温兆伦',
-                            age: 22,
+                            age: 100,
                             sex: "男"
                         }
-                    ],
-                    filterPersons: []
+                    ]
                 }
             },
-            watch: {
-                keyWord: {
-                    handler(newValue, oldValue) {
-                        console.log(newValue);
-                        // filter会返回一个全新的数组，并且不影响原数组
-                        this.filterPersons = this.persons.filter(v => v.name.includes(newValue));
-                    },
-                    immediate: true
+            computed: {
+                filterPersons() {
+                    const arr = this.persons.filter(v => v.name.includes(this.keyWord));
+
+                    if (this.sortType) {
+                        // sort会改变原数组
+                        arr.sort((a, b) => this.sortType === 1 ? a.age - b.age : b.age - a.age);
+                    }
+
+                    return arr;
                 }
             },
         })
-
-        // 任何字符串都会包含一个空字符串，输出0，空串是任何字符串的子集
-        console.log('abc'.indexOf(''));
-        console.log('abc'.includes(''));
     </script>
 </body>
 

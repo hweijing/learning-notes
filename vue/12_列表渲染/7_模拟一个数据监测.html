@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模拟一个数据监测</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <script>
+        let data = {
+            name: 'zhangsan',
+            age: 18
+        };
+
+        // 失败例子
+        // Object.defineProperty(data, 'name', {
+        //     set(value) {
+        //         // 死循环：一旦修改data.name就会进入setter，在setter里面又会修改data.name，就又会进入setter
+        //         data.name = value;
+        //     }
+        // });
+
+        // 成功例子
+        // 构造一个监视者Observer函数，入参为一个对象
+        function Observer(obj) {
+            // 汇总对象中所有的键形成一个数组
+            const keys = Object.keys(obj);
+
+            keys.forEach(k => {
+                // 此处的this是new出来的实例对象，不是obj
+                Object.defineProperty(this, k, {
+                    // 当读取new出来的实例对象的键时，会返回传入对象对应的值
+                    get() {
+                        return obj[k];
+                    },
+                    // 当修改new出来的实例对象的值时，会同时修改传入对象对应的值
+                    set(value) {
+                        console.log(`${k}被修改了`);
+                        obj[k] = value;
+                    }
+                })
+            })
+        }
+
+        // 创建一个监视者Observer
+        const obs = new Observer(data);
+
+        // obs是一个Observer
+        console.log(obs);
+
+        let vm = {};
+
+        vm._data = data = obs;
+
+        // true
+        console.log(vm._data === obs);
+    </script>
+</body>
+
+</html>

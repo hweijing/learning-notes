@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue监测数据改变的原理</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>名称：{{name}}</h1>
+        <h1>真实年龄：{{age.realAge}} 对外年龄：{{age.utterAge}}</h1>
+        <h1>朋友：</h1>
+        <ul>
+            <li v-for="(item, index) in friends" :key="index">
+                <p>{{item.name}}-{{item.age}}</p>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    name: 'zhangsan',
+                    age: {
+                        realAge: 30,
+                        utterAge: 18
+                    },
+                    friends: [
+                        {
+                            name: 'lisi',
+                            age: 31
+                        },
+                        {
+                            name: 'wangwu',
+                            age: 32
+                        }
+                    ]
+                }
+            }
+        })
+
+        // vue监测对象改变的原理是利用setter，vue会递归的监测data中的任何一个对象
+        // 只要data中任何一个对象的某个键值变了，setter中就会重新解析模板生成虚拟DOM，然后对比虚拟DOM，再决定是否重新渲染
+    </script>
+</body>
+
+</html>
