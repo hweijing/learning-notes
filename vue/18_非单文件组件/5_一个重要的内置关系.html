@@ -38,6 +38,10 @@
         // 99
         console.log(c.x);
 
+        // 任何对象都有__proto__这个属性指向原型对象，只有构造函数多了一个prototype属性也指向原型对象，而原型对象也有__proto__这个属性
+        // 所以，一般情况下，构造函数.prototype.__proto__ === 实例对象.__proto__.__proto__
+        console.log(Demo.prototype.__proto__ === c.__proto__.__proto__);
+
         // 一个重要的内置关系
         // VueComponent.prototype.__proto__ === Vue.prototype
         const hello = Vue.extend({
@@ -52,10 +56,15 @@
                 }
             },
         })
-        // true，hello是一个构造函数，hello.prototype是显式原型对象，并且是一个实例对象
+
+        // hello是一个构造函数，hello.prototype指向显式原型对象，即VueComponent的原型对象
+        // vue通过组件标签解析，new出来了一个VueComponent实例，用vc表示，vc.__proto__指向隐式原型对象，即VueComponent的原型对象
+        // Vue是一个构造函数，Vue.prototype指向显式原型对象，即Vue的原型对象
+        // new Vue创建出来的vue实例vm，vm.__proto__指向隐式原型对象，即Vue的原型对象
+
+        // vue在此处做了一个重要的关联，将VueComponent的原型对象的__proto__指向了Vue的原型对象，即vc.__proto__.__proto__ = vm.__proto__，所以vc才能读取vm身上的属性和方法
+        // 这样做的目的是让Vue的原型对象做一个兜底的人，因为Vue的原型对象上有很多属性和方法可以使用，所以任何实例和构造函数最后都会找到Vue的原型对象
         console.log(hello.prototype.__proto__ === Vue.prototype);
-
-
     </script>
 </body>
 
