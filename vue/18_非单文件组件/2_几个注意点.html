@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>几个注意点</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <school></school>
+
+        <!-- 自闭和标签，在脚手架环境下可以使用 -->
+        <!-- <school /> -->
+        <hr>
+        <student></student>
+    </div>
+
+    <script>
+        const school = Vue.extend({
+            // 可以给组件起名字，与开发者工具中显示相同
+            name: 'xuexiao',
+            data() {
+                return {
+                    schoolName: 'tsing',
+                    schoolAddress: 'beijing'
+                }
+            },
+            template: `
+                <div>
+                    <h1>学校名称：{{schoolName}}</h1>
+                    <h1>学校地址：{{schoolAddress}}</h1>
+                </div>
+            `
+        });
+
+        // 创建组件的简写形式，省略Vue.extend()
+        const student = {
+            name: 'xuesheng',
+            data() {
+                return {
+                    studentName: 'zhangsan',
+                    studentAge: 18
+                }
+            },
+            template: `
+                <div>
+                    <h1>学生姓名：{{studentName}}</h1>
+                    <h1>学生年龄：{{studentAge}}</h1>
+                </div>
+            `
+        };
+
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+
+                }
+            },
+            components: {
+                // 组件名的写法
+                school,
+                student
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分析生命周期</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>当前的n值是：{{n}}</h1>
+        <button @click="add">点我n+1</button>
+        <button @click="destroy">点我销毁vue实例</button>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    n: 1
+                }
+            },
+            methods: {
+                add() {
+                    this.n++;
+                    console.log('n+1了');
+                },
+                destroy() {
+                    // vue实例被销毁后，页面上的真实DOM还会保持最后一次的样子，但是已经不被vue管理了，清理它与其他实例的连接，解绑它的全部指令和自定义事件监听器
+                    this.$destroy()
+                }
+            },
+            watch: {
+                n() {
+                    console.log('n变化了');
+                }
+            },
+            // 此时无法通过vm访问到data中的数据和methods中的方法
+            beforeCreate() {
+                console.log('beforeCreate');
+
+                // 此时this中没有_data，没有n
+                // console.log(this);
+            },
+            // 此时可以通过vm访问到data中的数据和methods中的方法
+            created() {
+                console.log('created');
+
+                // 1
+                // console.log(this.n);
+            },
+            // 此时已经在内存中生成虚拟DOM，但页面还不能解析，页面呈现的是未经vue编译的DOM结构，所有对DOM的操作都不奏效
+            beforeMount() {
+                console.log('beforeMount');
+            },
+            // （重要）此时内存中的虚拟DOM已经转为真实DOM插入页面，页面呈现的是经过vue编译后的DOM
+            // 此时对DOM的操作均有效，并且至此初始化过程结束，一般在此进行：开启定时器、发送网络请求、订阅消息、绑定自定义事件等初始化操作
+            mounted() {
+                console.log('mounted');
+            },
+            // 此时数据是新的，但页面时旧的，即页面尚未和数据保持同步
+            // 页面上的n还是1，但此时输出vm.n是2
+            beforeUpdate() {
+                console.log('beforeUpdate');
+
+                // 2
+                // console.log(this.n);
+            },
+            // 此时数据是新的，页面也是新的，页面和数据保持同步
+            // 页面上的n和vm.2都是2
+            updated() {
+                console.log('updated');
+
+                // 2
+                // console.log(this.n);
+            },
+            // （重要）此时vm中所有的data、methods、指令等等都处于可用状态，马上要执行销毁过程，一般在此进行：关闭定时器、取消订阅消息、解绑自定义事件等收尾操作
+            beforeDestroy() {
+                console.log('beforeDestroy');
+
+                // 虽然处于可用状态，但页面上数据已经不会再更新了，this.n的值和页面上不匹配
+                this.add();
+            },
+            // 此时已经移除了所有监听属性、子组件和事件监听器，watch
+            destroyed() {
+                console.log('destroyed');
+            },
+        })
+    </script>
+</body>
+
+</html>

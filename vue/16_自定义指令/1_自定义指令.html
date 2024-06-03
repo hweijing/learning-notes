@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义指令</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>当前的n是：<span v-text="n"></span></h1>
+        <h1>放大10倍后的n是：<span v-big="n"></span></h1>
+        <button @click="n++">n自增1</button>
+        <br>
+        <!-- input元素的autofocus属性可以直接自动聚焦这个输入框 -->
+        <input type="text" v-focus:value="n">
+    </div>
+
+    <script>
+        // 全局指令
+        // Vue.directive('focus', {
+        //     bind(element, binding) {
+        //         element.value = binding.value;
+
+        //         // 此时this是window
+        //         // console.log(this);
+        //     },
+        //     // 指令所在元素被插入页面时调用
+        //     inserted(element, binding) {
+        //         // focus函数必须在input元素放入页面后才能执行
+        //         // 如果直接写成函数形式，则初始化页面时input元素还未被vue放入页面，只是生成了真实DOM元素，但还没有被append到页面中，所以element.focus()失效
+        //         element.focus();
+        //     },
+        //     // 指令所在的模板被重新解析时调用
+        //     update(element, binding) {
+        //         element.value = binding.value;
+        //         element.focus();
+        //     }
+        // })
+
+        // Vue.directive('big', (element, binding) => {
+        //     // element代表真实DOM，是HTMLElement的一个实例
+        //     // console.log(element instanceof HTMLElement);
+        //     // console.dir(element);
+
+        //     // binding是一个对象，对象中的value的值是n的值
+        //     // console.log(binding.value);
+
+        //     element.innerText = binding.value * 10;
+
+        //     // 此时this是window
+        //     // console.log(this);
+        // })
+
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    n: 1
+                }
+            },
+            // 局部指令
+            directives: {
+                // 自定义指令被调用的时机：
+                // 1.指令与元素成功绑定时，即初始化页面时会被调用
+                // 2.指令所在的模板被重新解析时
+                big(element, binding) {
+                    // element代表真实DOM，是HTMLElement的一个实例
+                    // console.log(element instanceof HTMLElement);
+                    // console.dir(element);
+
+                    // binding是一个对象，对象中的value的值是n的值
+                    // console.log(binding.value);
+
+                    element.innerText = binding.value * 10;
+                },
+                focus: {
+                    // 指令与元素成功绑定时调用，即初始化页面时会被调用
+                    bind(element, binding) {
+                        element.value = binding.value;
+
+                        // 此时this是window
+                        // console.log(this);
+                    },
+                    // 指令所在元素被插入页面时调用
+                    inserted(element, binding) {
+                        // focus函数必须在input元素放入页面后才能执行
+                        // 如果直接写成函数形式，则初始化页面时input元素还未被vue放入页面，只是生成了真实DOM元素，但还没有被append到页面中，所以element.focus()失效
+                        element.focus();
+                    },
+                    // 指令所在的模板被重新解析时调用
+                    update(element, binding) {
+                        element.value = binding.value;
+                        element.focus();
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

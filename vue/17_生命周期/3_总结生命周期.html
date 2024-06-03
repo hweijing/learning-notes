@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>总结生命周期</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1 :style="{opacity}">欢迎学习vue</h1>
+        <button @click="stop">点我停止变换</button>
+        <button @click="opacity = 1">透明度设置为1</button>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    opacity: 1
+                }
+            },
+            methods: {
+                stop() {
+                    this.$destroy();
+                }
+            },
+            // vue完成模板的解析，并把初始的真实DOM元素放入页面后（挂载完毕）调用mounted
+            mounted() {
+                // 可以直接操作vue实例，在vue实例上自己添加属性
+                this.timer = setInterval(() => {
+                    console.log('setInterval');
+
+                    this.opacity -= 0.01;
+                    if (this.opacity <= 0) {
+                        this.opacity = 1;
+                    }
+                }, 16);
+
+                // 此处this指vue实例
+                console.log(this);
+            },
+            beforeDestroy() {
+                clearInterval(this.timer);
+            },
+        })
+    </script>
+</body>
+
+</html>

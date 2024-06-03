@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue监测数组改变的原理</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>名称：{{name}}</h1>
+        <h1>真实年龄：{{age.realAge}} 对外年龄：{{age.utterAge}}</h1>
+        <h1>爱好：</h1>
+        <button @click="updateHobby">更改爱好</button>
+        <ul>
+            <li v-for="(item, index) in hobby" :key="index">
+                <p>{{item}}</p>
+            </li>
+        </ul>
+        <h1>朋友：</h1>
+        <button @click="addSex">给朋友们添加性别</button>
+        <ul>
+            <li v-for="(item, index) in friends" :key="index">
+                <p>{{item.name}}-{{item.age}}-{{item.sex}}</p>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    name: 'zhangsan',
+                    age: {
+                        realAge: 30,
+                        utterAge: 18
+                    },
+                    hobby: ['抽烟', '喝酒', '烫头'],
+                    friends: [
+                        {
+                            name: 'lisi',
+                            age: 31
+                        },
+                        {
+                            name: 'wangwu',
+                            age: 32
+                        }
+                    ]
+                }
+            },
+            methods: {
+                addSex() {
+                    this.friends.forEach(p => {
+                        Vue.set(p, 'sex', '男');
+                    });
+                },
+                updateHobby() {
+                    // 这种方式修改数组内元素，控制台显示数据已更改，但vue监测不到数据更改
+                    // this.hobby[0] = '学习';
+
+                    // 法一：数组更新监测，vue只对push、pop、shift、unshift、splice、sort、reverse更改数组做监测
+                    // 如果更改的是数组中的某个对象，则对象中的所有属性也都是响应式属性
+                    this.friends.splice(0, 1, {
+                        name: 'maliu',
+                        age: 40
+                    });
+
+                    // false，vue中这些更改数组的方法与Array原型中方法不一样，vue在原生数组操作方法上又加了一层响应式，生成虚拟DOM，再对比
+                    // console.log(this.hobby.push === Array.prototype.push);
+
+                    // true
+                    // console.log([].push === Array.prototype.push);
+
+                    // 法二：用Vue.set()也可以修改数组内元素
+                    Vue.set(this.hobby, 1, '打台球');
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-pre</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- v-pre：跳过其所在节点的编译过程，常用于没有使用指令语法、插值语法的节点，会加快编译 -->
+        <h1 v-pre>加上v-pre后</h1>
+        <!-- 加上v-pre后不会解析插值语法 -->
+        <h1 v-pre>{{n}}</h1>
+        <button @click="n++">自增1</button>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    n: 1
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

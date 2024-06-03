@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-once</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{n}}</h1>
+        <!-- v-once标识的结点在初次动态渲染后就变成静态内容了，之后不会再改变了 -->
+        <h1 v-once>初始化的n是:{{n}}</h1>
+        <button @click="n++">自增1</button>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    n: 1
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.set()</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>名称：{{name}}</h1>
+        <h1>真实年龄：{{age.realAge}} 对外年龄：{{age.utterAge}}</h1>
+        <h1>朋友：</h1>
+        <button @click="addSex">给朋友们添加性别</button>
+        <ul>
+            <li v-for="(item, index) in friends" :key="index">
+                <!-- 在此处添加一个性别的键，item没有定义sex属性，但并不会报错 -->
+                <!-- 除了vue实例对象外，使用其内部的任意对象中一个不存在的键值对，只是会返回undefined，并不会报错 -->
+                <p>{{item.name}}-{{item.age}}-{{item.sex}}</p>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    name: 'zhangsan',
+                    age: {
+                        realAge: 30,
+                        utterAge: 18
+                    },
+                    friends: [
+                        {
+                            name: 'lisi',
+                            age: 31
+                        },
+                        {
+                            name: 'wangwu',
+                            age: 32
+                        }
+                    ]
+                }
+            },
+            methods: {
+                addSex() {
+                    // Vue.set()可以给对象创建响应式属性值，除了vue实例本身
+                    this.friends.forEach(p => {
+                        Vue.set(p, 'sex', '男');
+                    });
+
+                    // 报错，不能向vue实例本身添加响应式属性
+                    // Vue.set(this, 'sex', '男');
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

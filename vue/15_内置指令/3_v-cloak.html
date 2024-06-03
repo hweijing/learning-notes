@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-cloak</title>
+    <!-- js阻塞：如果此处链接有延迟，那么下面的DOM节点和js脚本都不能执行，页面会处于空白状态 -->
+    <script src="../vue.js"></script>
+    <style>
+        [v-clock] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <!-- v-cloak：在页面未被vue接管解析时，可以结合css样式隐藏页面中的各种语法 -->
+        <h1 v-cloak>{{name}}</h1>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    name: 'zhangsan'
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>

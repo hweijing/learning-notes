@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过滤器</title>
+    <script src="../vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.11.11/dayjs.min.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 计算属性实现 -->
+        <h1>显示格式化后的时间：{{formatTime}}</h1>
+
+        <!-- methods实现 -->
+        <h1>显示格式化后的时间：{{getFormatTime()}}</h1>
+
+        <!-- 过滤器实现 -->
+        <h1>显示格式化后的时间：{{time | timeFormater}}</h1>
+
+        <!-- 通用过滤器：即使过滤器中传入的有参数，第一个参数依然是管道前的值，第二个才是入参 -->
+        <h1>显示格式化后的时间：{{time | timeFormater('YYYY-MM-DD')}}</h1>
+
+        <!-- 串联过滤器 -->
+        <h1>显示格式化后的时间：{{time | timeFormater('YYYY-MM-DD') | sliceTime}}</h1>
+
+        <!-- 用在v-bind中，msg通过管道变成wang，过滤器只能用在插值语法和v-bind中 -->
+        <h1 :x="msg | sliceTime">用在标签属性中</h1>
+    </div>
+
+    <div id="root2">
+        <h1>{{msg | sliceTime}}</h1>
+    </div>
+
+    <script>
+        // 全局过滤器，必须在new Vue之前配置好
+        Vue.filter('sliceTime', (value) => value.slice(0, 4));
+
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    // Date.now()返回时间戳
+                    time: 1717395084220,
+                    msg: 'wangwu'
+                }
+            },
+            computed: {
+                formatTime() {
+                    return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss');
+                }
+            },
+            methods: {
+                getFormatTime() {
+                    return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss');
+                }
+            },
+            // 局部过滤器：filters里面定义的过滤器只有当前vue实例可以使用
+            filters: {
+                // 自定义过滤器，入参是管道前的参数
+                // 即使过滤器中传入的有参数，第一个参数依然是管道前的值，第二个才是入参
+                // 形参默认值：es6语法，如果有传参就用参数的值，如果没有就用默认值
+                timeFormater(value, str = 'YYYY-MM-DD HH:mm:ss') {
+                    // 此时this是window，所以不能用this.time
+                    // console.log(this);
+
+                    return dayjs(value).format(str);
+                }
+            }
+        })
+
+        const vm2 = new Vue({
+            el: '#root2',
+            data() {
+                return {
+                    msg: 'zhangsan'
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一个重要的内置关系</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+
+    </div>
+
+    <script>
+        // 定义一个构造函数
+        function Demo() {
+            this.a = 'a';
+            this.b = 'b';
+        };
+
+        // 创建一个Demo的实例对象
+        const c = new Demo();
+
+        // 显式原型对象
+        console.dir(Demo.prototype);
+
+        // 隐式原型对象，new出来的实例对象都是工厂生产的具体实物，这些具体实物会有一个隐式的__proto__属性
+        console.log(c.__proto__);
+
+        // true
+        console.log(Demo.prototype === c.__proto__);
+
+        // 在构造函数的显示原型对象上增加一个属性x
+        // 常在构造函数的显示原型对象上增加属性，这样new出来的实例对象可以自己顺着原型链往上找该属性
+        Demo.prototype.x = 99;
+        // 99
+        console.log(c.x);
+
+        // 一个重要的内置关系
+        // VueComponent.prototype.__proto__ === Vue.prototype
+        const hello = Vue.extend({
+            template: `
+                <div>
+                    <p>{{msg}}</p>    
+                </div>            
+            `,
+            data() {
+                return {
+                    msg: '你好'
+                }
+            },
+        })
+        // true，hello是一个构造函数，hello.prototype是显式原型对象，并且是一个实例对象
+        console.log(hello.prototype.__proto__ === Vue.prototype);
+
+
+    </script>
+</body>
+
+</html>
